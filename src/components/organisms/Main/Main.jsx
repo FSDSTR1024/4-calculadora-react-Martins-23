@@ -1,9 +1,10 @@
 import "./Main.css"
 import { Calculator } from "../Calculator"
+import { History } from "../History"
 
 export const Main = () => (
   <main>
     <Calculator />
-    <p>History Section</p>
+    <History />
   </main>
 );
