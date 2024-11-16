@@ -1,2 +1,2 @@
-import { Calculator } from './Calculator.jsx';
-export { Calculator };
+import { Calculator } from './Calculator.jsx'
+export { Calculator }

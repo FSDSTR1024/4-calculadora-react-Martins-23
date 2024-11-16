@@ -1,2 +1,2 @@
-import { Header } from './Header.jsx';
-export { Header };
+import { Header } from './Header.jsx'
+export { Header }

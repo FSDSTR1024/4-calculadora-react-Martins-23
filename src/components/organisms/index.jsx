@@ -1,2 +1,2 @@
-import { Main } from './Main.jsx';
-export { Main };
+import { Main } from './Main.jsx'
+export { Main }
