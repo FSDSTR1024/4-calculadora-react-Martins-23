@@ -1,0 +1,66 @@
+button {
+  background-color: #d2b48c;
+  border: 2px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.5em;
+  padding: 10px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #c0a08095;
+}
+
+button.operation {
+  background-color: #f9a825;
+}
+
+button.operation:hover {
+  background-color: #f67b0f;
+}
+
+button.specialOperation {
+  background-color: #c278f7;
+}
+
+button.specialOperation:hover {
+  background-color: #9850fc;
+}
+
+button#calculate {
+  background-color: #4caf50;
+  font-weight: bold;
+}
+
+button#calculate:hover {
+  background-color: #388e3c;
+}
+
+button#clear {
+  background-color: #4c8baf;
+  font-weight: bold;
+}
+
+button#clear:hover {
+  background-color: #2f66d3e8;
+}
+
+button#delete {
+  background-color: #e53935;
+}
+
+button#delete:hover {
+  background-color: #d32f2fbd;
+}
+
+button#delete img {
+  height: auto;
+  vertical-align: middle;
+  width: 100%;
+}
+
+button:disabled {
+  background-color: grey !important;
+  cursor: not-allowed;
+}
