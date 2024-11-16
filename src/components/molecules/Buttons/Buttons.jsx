@@ -1,4 +1,4 @@
-import './Buttons.css'
+import "./Buttons.css"
 
 export const Buttons = () => (
   <div id="buttons">

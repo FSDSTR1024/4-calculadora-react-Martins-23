@@ -1,5 +1,5 @@
-import './Main.css'
-import { Calculator } from '../Calculator'
+import "./Main.css"
+import { Calculator } from "../Calculator"
 
 export const Main = () => (
   <main>

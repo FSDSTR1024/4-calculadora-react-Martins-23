@@ -1,4 +1,4 @@
-import './Display.css'
+import "./Display.css"
 
 export const Display = () => (
   <div>

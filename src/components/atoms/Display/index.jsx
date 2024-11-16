@@ -1,2 +1,2 @@
-import { Display } from './Display.jsx'
+import { Display } from "./Display.jsx"
 export { Display }

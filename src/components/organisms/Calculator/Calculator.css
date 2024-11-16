@@ -1,6 +1,6 @@
 #calculator {
   background:
-    url('https://www.transparenttextures.com/patterns/wood.png'), /* Wood texture */
+    url("https://www.transparenttextures.com/patterns/wood.png"), /* Wood texture */
     #6d4427; /* Wood-like brown color */
   border: 2px solid #ff990054;
   border-radius: 10px;
