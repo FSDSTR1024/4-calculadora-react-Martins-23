@@ -1,0 +1,12 @@
+#display {
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 5px;
+  font-size: 2rem;
+  margin: 5px 0 20px 0;
+  overflow: hidden; /* Hide overflow by default */
+  overflow-x: auto; /* Add horizontal scrollbar if needed */
+  padding: 10px;
+  text-align: right;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
