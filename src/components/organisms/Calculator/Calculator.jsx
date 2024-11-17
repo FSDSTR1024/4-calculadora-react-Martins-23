@@ -33,6 +33,25 @@ export const Calculator = () => {
 
   // Method to handle the delete button
   const handleDeleteButton = () => {
+    if (wasOperatorClicked) {
+      // The last introduced element was an operation
+      setOperators(operators.slice(0, -1));
+      setWasOperatorClicked(false);
+    } else {
+      // The last introduced element was a number
+      const lastNumber = numbers[numbers.length - 1];
+      // The last number had more than one digit
+      if (lastNumber.length > 1) setNumbers([...numbers.slice(0, -1), lastNumber.slice(0, -1)]);
+      // The last number had only one digit
+      else {
+        // The last introduced element was actually the first number introduced
+        if (numbers.length === 1) setNumbers(['0']);
+        else {
+          setNumbers([...numbers.slice(0, -1)]);
+          setWasOperatorClicked(true);
+        }
+      }
+    }
   };
 
   // Method to calculate the operation
