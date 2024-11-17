@@ -21,7 +21,7 @@ export const Buttons = ({ handleButtonClicked }) => (
     <Button className="operator" content="+" handleButtonClicked={handleButtonClicked} />
     <Button id="clear" content="C" handleButtonClicked={handleButtonClicked} />
     <Button className="number" content="0" handleButtonClicked={handleButtonClicked} />
-    <Button id="delete">
+    <Button id="delete" handleButtonClicked={handleButtonClicked} >
       <img src="../../../assets/backspace_symbol.png" alt="Delete button" />
     </Button>
     <Button id="calculate" content="=" handleButtonClicked={handleButtonClicked} />
