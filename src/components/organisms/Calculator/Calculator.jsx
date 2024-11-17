@@ -70,9 +70,15 @@ export const Calculator = () => {
     }
   }
 
+  // Handle disabling of some buttons
+  const [isDeleteDisabled, setIsDeleteDisabled] = useState(true);
+  useEffect(() => {
+    setIsDeleteDisabled((numbers.length <= 1 && numbers[0] === '0') && operators.length === 0);
+  }, [numbers, operators]);
+
   return (
     <section id="calculator">
       <Display displayStr={displayStr}/>
-      <Buttons handleButtonClicked={handleButtonClicked}/>
+      <Buttons handleButtonClicked={handleButtonClicked} isDeleteDisabled={isDeleteDisabled} />
     </section>
 )};

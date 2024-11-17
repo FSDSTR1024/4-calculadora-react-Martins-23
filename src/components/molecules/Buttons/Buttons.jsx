@@ -1,7 +1,7 @@
 import "./Buttons.css"
 import { Button } from "../../atoms/Button"
 
-export const Buttons = ({ handleButtonClicked }) => (
+export const Buttons = ({ handleButtonClicked, isDeleteDisabled }) => (
   <div id="buttons">
     <Button className="specialOperation" content="&#8730;" handleButtonClicked={handleButtonClicked} />
     <Button className="specialOperation" content="&sup2;" handleButtonClicked={handleButtonClicked} />
@@ -21,7 +21,7 @@ export const Buttons = ({ handleButtonClicked }) => (
     <Button className="operator" content="+" handleButtonClicked={handleButtonClicked} />
     <Button id="clear" content="C" handleButtonClicked={handleButtonClicked} />
     <Button className="number" content="0" handleButtonClicked={handleButtonClicked} />
-    <Button id="delete" handleButtonClicked={handleButtonClicked} >
+    <Button id="delete" handleButtonClicked={handleButtonClicked} disabled={isDeleteDisabled} >
       <img src="../../../assets/backspace_symbol.png" alt="Delete button" />
     </Button>
     <Button id="calculate" content="=" handleButtonClicked={handleButtonClicked} />
