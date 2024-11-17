@@ -1,7 +1,11 @@
 import "./Buttons.css"
 import { Button } from "../../atoms/Button"
 
-export const Buttons = ({ handleButtonClicked, isDeleteDisabled }) => (
+export const Buttons = ({
+  handleButtonClicked,
+  isCalculateDisabled,
+  isDeleteDisabled
+}) => (
   <div id="buttons">
     <Button
       className="specialOperation"
@@ -102,6 +106,7 @@ export const Buttons = ({ handleButtonClicked, isDeleteDisabled }) => (
     </Button>
     <Button
       content="="
+      disabled={isCalculateDisabled}
       handleButtonClicked={handleButtonClicked}
       id="calculate"
     />
