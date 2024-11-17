@@ -31,6 +31,14 @@ export const Calculator = () => {
     setdisplayStr(newDisplayStr);
   }, [numbers, operators]);
 
+  // Method to handle the delete button
+  const handleDeleteButton = () => {
+  }
+
+  // Method to calculate the operation
+  const calculate = () => {
+  }
+
   // Method to handle when a number is clicked, to update the numbers list
   const handleNumberClicked = (number) => {
     if (wasOperatorClicked) setNumbers([...numbers, number]);
@@ -57,6 +65,8 @@ export const Calculator = () => {
     else {
       const buttonId = event.target.id;
       if (buttonId === "clear") setInitialState();
+      else if (buttonId === "delete") handleDeleteButton();
+      else if (buttonId === "calculate") calculate();
     }
   }
 
