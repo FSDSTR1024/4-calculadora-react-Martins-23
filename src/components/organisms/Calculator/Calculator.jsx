@@ -15,6 +15,12 @@ export const Calculator = () => {
   // String to display the operation
   const [displayStr, setdisplayStr] = useState('0');
 
+  const setInitialState = () => {
+    setNumbers(['0']);
+    setOperators([]);
+    setWasOperatorClicked(false);
+  }
+
   // UseEffect to update the displayStr when numbers or operators lists change
   useEffect(() => {
     let newDisplayStr = '';
@@ -48,6 +54,10 @@ export const Calculator = () => {
     const buttonClass = event.target.className;
     if (buttonClass.includes("number")) handleNumberClicked(event.target.textContent);
     else if (buttonClass.includes("operator")) handleOperatorClicked(event.target.textContent);
+    else {
+      const buttonId = event.target.id;
+      if (buttonId === "clear") setInitialState();
+    }
   }
 
   return (
