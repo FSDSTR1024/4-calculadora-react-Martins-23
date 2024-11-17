@@ -12,11 +12,11 @@ button:hover {
   background-color: #c0a08095;
 }
 
-button.operation {
+button.operator {
   background-color: #f9a825;
 }
 
-button.operation:hover {
+button.operator:hover {
   background-color: #f67b0f;
 }
 
