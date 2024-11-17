@@ -29,7 +29,7 @@ export const Calculator = () => {
       if (operators[index]) newDisplayStr += ` ${operators[index]} `;
     });
     setdisplayStr(newDisplayStr);
-}, [numbers, operators]);
+  }, [numbers, operators]);
 
   // Method to handle when a number is clicked, to update the numbers list
   const handleNumberClicked = (number) => {
