@@ -1,6 +1,11 @@
 import "./HistoryListItem.css"
 
-export const HistoryListItem = ({ timestamp, operationStr, operationResultStatus, operationResultContent }) => {
+export const HistoryListItem = ({
+  operationResultContent,
+  operationResultStatus,
+  operationStr,
+  timestamp
+}) => {
   const operationResultClassStr = `operationResult ${operationResultStatus}`;
   return (
     <li>
@@ -10,4 +15,5 @@ export const HistoryListItem = ({ timestamp, operationStr, operationResultStatus
         <p className={operationResultClassStr}>{operationResultContent}</p>
       </div>
     </li>
-)};
+  );
+};
