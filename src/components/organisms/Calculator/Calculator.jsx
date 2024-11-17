@@ -7,20 +7,23 @@ import { Buttons } from "../../molecules/Buttons"
 export const Calculator = () => {
   // List of numbers inside the operation
   const [numbers, setNumbers] = useState(['0']);
+  // List of operators inside the operation
+  const [operators, setOperators] = useState([]);
   // Flag to check if the last button clicked was an operator
   const [wasOperatorClicked, setWasOperatorClicked] = useState(false);
 
   // String to display the operation
   const [displayStr, setdisplayStr] = useState('0');
 
-  // UseEffect to update the displayStr when numbers list changes
+  // UseEffect to update the displayStr when numbers or operators lists change
   useEffect(() => {
     let newDisplayStr = '';
     numbers.forEach((number, index) => {
       newDisplayStr += number;
+      if (operators[index]) newDisplayStr += ` ${operators[index]} `;
     });
     setdisplayStr(newDisplayStr);
-}, [numbers]);
+}, [numbers, operators]);
 
   // Method to handle when a number is clicked, to update the numbers list
   const handleNumberClicked = (number) => {
@@ -33,10 +36,18 @@ export const Calculator = () => {
     setWasOperatorClicked(false);
   }
 
+  // Method to handle when an operator is clicked, to update the operators list
+  const handleOperatorClicked = (operator) => {
+    if (wasOperatorClicked) setOperators([...operators.slice(0, -1), operator]);
+    else setOperators([...operators, operator]);
+    setWasOperatorClicked(true);
+  }
+
   // Method to handle when a button is clicked, to update the operation and calculator's lists
   const handleButtonClicked = (event) => {
     const buttonClass = event.target.className;
     if (buttonClass.includes("number")) handleNumberClicked(event.target.textContent);
+    else if (buttonClass.includes("operator")) handleOperatorClicked(event.target.textContent);
   }
 
   return (
