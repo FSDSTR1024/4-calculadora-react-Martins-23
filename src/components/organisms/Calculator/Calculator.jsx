@@ -5,7 +5,7 @@ import { operations } from "./operations"
 import { Display } from "../../atoms/Display"
 import { Buttons } from "../../molecules/Buttons"
 
-export const Calculator = () => {
+export const Calculator = ({ history, setHistory }) => {
   // List of numbers inside the operation
   const [numbers, setNumbers] = useState(['0']);
   // List of operators inside the operation
@@ -60,10 +60,12 @@ export const Calculator = () => {
     }
   };
 
-  // Method to calculate the operation
-  const calculate = () => {
+  // Method to calculate the operation, and add the history entry
+  const calculateAndLog = () => {
     let numbersCpy = [...numbers];
     let operatorsCpy = [...operators];
+    const timestamp = new Date().toLocaleString();
+    const operationStr = `${displayStr} =`;
 
     while (operatorsCpy.length > 0) {
       let operationIdx = -1;
@@ -81,15 +83,16 @@ export const Calculator = () => {
       const operationResult = operationObj.method(...numbersInvolved.map(parseFloat)).toString();
       if (operationResult.includes("ERROR")) {
         setInitialState();
-        setNumbers([operationResult]);
+        numbersCpy = [operationResult];
         break;
       }
       numbersCpy.splice(operationIdx, 0, operationResult);
       operatorsCpy.splice(operationIdx, 1);
     }
+    const result = numbersCpy[0];
+    setHistory([{ timestamp, operationStr, result }, ...history]);
     setInitialState();
-    setNumbers(numbersCpy);
-    setOperators(operatorsCpy);
+    if (!numbersCpy[0].includes("ERROR")) setNumbers(numbersCpy);
   };
 
   // Method to handle when a number is clicked, to update the numbers list
@@ -110,6 +113,7 @@ export const Calculator = () => {
     if (wasOperatorClicked) setOperators([...operators.slice(0, -1), operator]);
     else setOperators([...operators, operator]);
     setWasOperatorClicked(true);
+    setIsResult(false);
   };
 
   // Method to handle when a button is clicked, to update the operation and calculator's lists
@@ -121,7 +125,7 @@ export const Calculator = () => {
       const buttonId = event.target.id;
       if (buttonId === "clear") setInitialState();
       else if (buttonId === "delete") handleDeleteButton();
-      else if (buttonId === "calculate") calculate();
+      else if (buttonId === "calculate") calculateAndLog();
     }
   };
 
@@ -130,11 +134,10 @@ export const Calculator = () => {
   const [isDeleteDisabled, setIsDeleteDisabled] = useState(true);
   useEffect(() => {
     setIsCalculateDisabled(wasOperatorClicked);
-    setIsDeleteDisabled(
-      ((numbers.length <= 1 && numbers[0] === '0')
-        && operators.length === 0)
-      || isResult);
+    setIsDeleteDisabled(isResult || (numbers.length <= 1 && numbers[0] === "0" && operators.length === 0));
   }, [isResult, numbers, operators, wasOperatorClicked]);
+
+  // TODO: Afegir implementació per keydown dels buttons del teclat
 
   return (
     <section id="calculator">
