@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "./Calculator.css"
+import { operations } from "./operations"
 import { Display } from "../../atoms/Display"
 import { Buttons } from "../../molecules/Buttons"
 
@@ -56,6 +57,33 @@ export const Calculator = () => {
 
   // Method to calculate the operation
   const calculate = () => {
+    let numbersCpy = [...numbers];
+    let operatorsCpy = [...operators];
+
+    while (operatorsCpy.length > 0) {
+      let operationIdx = -1;
+      let operationObj = undefined;
+
+      for (let operation of operations.sort((x, y) => x.priority - y.priority)) {
+        operationIdx = operatorsCpy.indexOf(operation.symbol);
+        if (operationIdx !== -1) {
+          operationObj = operation;
+          break;
+        }
+      }
+
+      const numbersInvolved = numbersCpy.splice(operationIdx, operationObj.neededValues);
+      const operationResult = operationObj.method(...numbersInvolved.map(parseFloat)).toString();
+      if (operationResult.includes("ERROR")) {
+        setInitialState();
+        setNumbers([operationResult]);
+        break;
+      }
+      numbersCpy.splice(operationIdx, 0, operationResult);
+      operatorsCpy.splice(operationIdx, 1);
+    }
+    setNumbers(numbersCpy);
+    setOperators(operatorsCpy);
   };
 
   // Method to handle when a number is clicked, to update the numbers list
