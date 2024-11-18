@@ -16,7 +16,7 @@ export const Calculator = ({ history, setHistory }) => {
   const [isResult, setIsResult] = useState(true);
 
   // String to display the operation
-  const [displayStr, setdisplayStr] = useState('0');
+  const [displayStr, setDisplayStr] = useState('0');
 
   const setInitialState = () => {
     setNumbers(['0']);
@@ -32,7 +32,7 @@ export const Calculator = ({ history, setHistory }) => {
       newDisplayStr += number;
       if (operators[index]) newDisplayStr += ` ${operators[index]} `;
     });
-    setdisplayStr(newDisplayStr);
+    setDisplayStr(newDisplayStr);
   }, [numbers, operators]);
 
   // Method to handle the delete button
