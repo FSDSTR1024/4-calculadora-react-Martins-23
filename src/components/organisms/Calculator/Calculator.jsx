@@ -12,6 +12,8 @@ export const Calculator = () => {
   const [operators, setOperators] = useState([]);
   // Flag to check if the last button clicked was an operator
   const [wasOperatorClicked, setWasOperatorClicked] = useState(false);
+  // Flag to check if display is showing a result
+  const [isResult, setIsResult] = useState(true);
 
   // String to display the operation
   const [displayStr, setdisplayStr] = useState('0');
@@ -20,6 +22,7 @@ export const Calculator = () => {
     setNumbers(['0']);
     setOperators([]);
     setWasOperatorClicked(false);
+    setIsResult(true);
   };
 
   // UseEffect to update the displayStr when numbers or operators lists change
@@ -46,8 +49,10 @@ export const Calculator = () => {
       // The last number had only one digit
       else {
         // The last introduced element was actually the first number introduced
-        if (numbers.length === 1) setNumbers(['0']);
-        else {
+        if (numbers.length === 1) {
+          setNumbers(['0']);
+          setIsResult(true);
+        } else {
           setNumbers([...numbers.slice(0, -1)]);
           setWasOperatorClicked(true);
         }
@@ -88,13 +93,15 @@ export const Calculator = () => {
 
   // Method to handle when a number is clicked, to update the numbers list
   const handleNumberClicked = (number) => {
-    if (wasOperatorClicked) setNumbers([...numbers, number]);
+    if (isResult) setNumbers([number]);
+    else if (wasOperatorClicked) setNumbers([...numbers, number]);
     else {
       const lastNumber = numbers[numbers.length - 1];
       const newNumber = lastNumber === '0' ? number : lastNumber + number;
       setNumbers([...numbers.slice(0, -1), newNumber]);
     }
     setWasOperatorClicked(false);
+    setIsResult(false);
   };
 
   // Method to handle when an operator is clicked, to update the operators list
@@ -122,8 +129,11 @@ export const Calculator = () => {
   const [isDeleteDisabled, setIsDeleteDisabled] = useState(true);
   useEffect(() => {
     setIsCalculateDisabled(wasOperatorClicked);
-    setIsDeleteDisabled((numbers.length <= 1 && numbers[0] === '0') && operators.length === 0);
-  }, [numbers, operators, wasOperatorClicked]);
+    setIsDeleteDisabled(
+      ((numbers.length <= 1 && numbers[0] === '0')
+        && operators.length === 0)
+      || isResult);
+  }, [isResult, numbers, operators, wasOperatorClicked]);
 
   return (
     <section id="calculator">
