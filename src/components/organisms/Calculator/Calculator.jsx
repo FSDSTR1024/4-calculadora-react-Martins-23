@@ -87,6 +87,7 @@ export const Calculator = () => {
       numbersCpy.splice(operationIdx, 0, operationResult);
       operatorsCpy.splice(operationIdx, 1);
     }
+    setInitialState();
     setNumbers(numbersCpy);
     setOperators(operatorsCpy);
   };
