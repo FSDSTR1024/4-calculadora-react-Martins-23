@@ -1,5 +1,6 @@
 import "./Buttons.css"
 import { Button } from "../../atoms/Button"
+import BackspaceSymbol from "../../../assets/backspace_symbol.png"
 
 export const Buttons = ({
   handleButtonClicked,
@@ -102,7 +103,7 @@ export const Buttons = ({
       handleButtonClicked={handleButtonClicked}
       id="delete"
     >
-      <img src="../../../assets/backspace_symbol.png" alt="Delete button" />
+      <img src={BackspaceSymbol} alt="Delete button" />
     </Button>
     <Button
       content="="
