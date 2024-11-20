@@ -25,7 +25,7 @@ const square = (number) => {
 const squareRoot = (number) => {
   if (number < 0) {
     alert("Square root of negative number is not allowed!");
-    return "ERROR! Square root of negative number.";
+    return "ERROR: Square root of negative number!";
   }
   return Math.sqrt(number);
 };
