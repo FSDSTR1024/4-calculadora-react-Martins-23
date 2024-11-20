@@ -41,16 +41,16 @@ export const operations = [
     method: powerOf,
     neededValues: 2
   },
-  { // Multiplication
-    priority: 2,
-    symbol: '*',
-    method: multiply,
-    neededValues: 2
-  },
   { // Division
-    priority: 3,
+    priority: 2,
     symbol: '/',
     method: divide,
+    neededValues: 2
+  },
+  { // Multiplication
+    priority: 3,
+    symbol: '*',
+    method: multiply,
     neededValues: 2
   },
   { // Substraction
