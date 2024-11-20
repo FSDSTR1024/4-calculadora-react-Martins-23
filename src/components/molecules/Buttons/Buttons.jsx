@@ -102,11 +102,11 @@ export const Buttons = ({
       handleButtonClicked={handleButtonClicked}
     />
     <Button
+      className="delete"
       disabled={isDeleteDisabled}
       handleButtonClicked={handleButtonClicked}
-      id="delete"
     >
-      <img src={BackspaceSymbol} alt="Delete button" />
+      <img alt="Delete button" className="delete" src={BackspaceSymbol} />
     </Button>
     <Button
       content="="

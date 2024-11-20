@@ -19,11 +19,11 @@ export const Button = ({
         {content}
       </button>
     );
-  } else if (id !== undefined && children) {
+  } else if (className !== undefined && children !== undefined) {
     return (
       <button
+        className={className}
         disabled={disabled}
-        id={id}
         onClick={handleButtonClicked}
         type="button"
       >
