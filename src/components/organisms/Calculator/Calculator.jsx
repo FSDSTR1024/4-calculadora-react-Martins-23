@@ -187,6 +187,18 @@ export const Calculator = ({ history, setHistory }) => {
     setIsDeleteDisabled(isResult || (numbers.length <= 1 && numbers[0] === "0" && operators.length === 0));
   }, [isResult, numbers, operators, wasOperatorClicked]);
 
+  // Handling of the keydown event
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const key = event.key;
+      if (key >= '0' && key <= '9') setNumberClicked({ target: { textContent: key } });
+      else if (key === '+' || key === '-' || key === '*' || key === '/' || key === '^') setOperatorClicked({ target: { textContent: key } });
+      else if (key === 'Backspace') setDeleteButtonClicked(true);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <section id="calculator">
       <Display displayStr={displayStr} />
