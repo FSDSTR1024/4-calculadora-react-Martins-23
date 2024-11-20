@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import "./Calculator.css"
 import { operations } from "./operations"
 import { Display } from "../../atoms/Display"
 import { Buttons } from "../../molecules/Buttons"
 
+const sqRtSymbol = '\u221A';
+const sqrSymbol = '\u00B2';
+
 export const Calculator = ({ history, setHistory }) => {
-  // List of numbers inside the operation
-  const [numbers, setNumbers] = useState(['0']);
-  // List of operators inside the operation
-  const [operators, setOperators] = useState([]);
-  // Flag to check if the last button clicked was an operator
-  const [wasOperatorClicked, setWasOperatorClicked] = useState(false);
-  // Flag to check if display is showing a result
-  const [isResult, setIsResult] = useState(true);
+  const [numbers, setNumbers] = useState(['0']);  // List of numbers inside the operation
+  const [operators, setOperators] = useState([]);  // List of operators inside the operation
+  const [wasOperatorClicked, setWasOperatorClicked] = useState(false);  // Flag to check if the last button clicked was an operator
+  const [isResult, setIsResult] = useState(true);  // Flag to check if display is showing a result
 
-  // String to display the operation
-  const [displayStr, setDisplayStr] = useState('0');
-
+  // Function to clear and set the initial state of the calculator
   const setInitialState = () => {
     setNumbers(['0']);
     setOperators([]);
@@ -25,18 +22,54 @@ export const Calculator = ({ history, setHistory }) => {
     setIsResult(true);
   };
 
-  // UseEffect to update the displayStr when numbers or operators lists change
+  // Handling if a number button is clicked, to update the numbers' list
+  const [numberClicked, setNumberClicked] = useState('');
+  const handleNumberClicked = useCallback(() => {
+    if (numberClicked.target === undefined) return;
+    const number = numberClicked.target.textContent;
+    if (isResult) setNumbers([number]);
+    else if (wasOperatorClicked) setNumbers([...numbers, number]);
+    else {
+      const lastNumber = numbers[numbers.length - 1];
+      const newNumber = lastNumber === '0' ? number : lastNumber + number;
+      setNumbers([...numbers.slice(0, -1), newNumber]);
+    }
+    setWasOperatorClicked(false);
+    setIsResult(false);
+  }, [numberClicked]);
   useEffect(() => {
-    let newDisplayStr = '';
-    numbers.forEach((number, index) => {
-      newDisplayStr += number;
-      if (operators[index]) newDisplayStr += ` ${operators[index]} `;
-    });
-    setDisplayStr(newDisplayStr);
-  }, [numbers, operators]);
+    handleNumberClicked();
+  }, [handleNumberClicked]);
 
-  // Method to handle the delete button
-  const handleDeleteButton = () => {
+  // Handling if an operator button is clicked, to update the operators' list
+  const [operatorClicked, setOperatorClicked] = useState('');
+  const handleOperatorClicked = useCallback(() => {
+    if (operatorClicked.target === undefined) return;
+    const operator = operatorClicked.target.textContent;
+    if (wasOperatorClicked) setOperators([...operators.slice(0, -1), operator]);
+    else setOperators([...operators, operator]);
+    setWasOperatorClicked(true);
+    setIsResult(false);
+  }, [operatorClicked]);
+  useEffect(() => {
+    handleOperatorClicked();
+  }, [handleOperatorClicked]);
+
+  // Handling if a special operator button is clicked, to update the operators' list and calculate
+  const [specialOperatorClicked, setSpecialOperatorClicked] = useState('');
+  const handleSpecialOperatorClicked = useCallback(() => {
+    if (specialOperatorClicked.target === undefined) return;
+    const specialOperator = specialOperatorClicked.target.textContent;
+    setOperators([...operators, specialOperator]);
+  }, [specialOperatorClicked]);
+  useEffect(() => {
+    handleSpecialOperatorClicked();
+  }, [handleSpecialOperatorClicked]);
+
+  // Handling if the delete button is clicked, to delete the last number or operator introduced
+  const [deleteButtonClicked, setDeleteButtonClicked] = useState(false);
+  const handleDeleteButtonClicked = useCallback(() => {
+    if (!deleteButtonClicked) return;
     if (wasOperatorClicked) {
       // The last introduced element was an operation
       setOperators(operators.slice(0, -1));
@@ -58,19 +91,23 @@ export const Calculator = ({ history, setHistory }) => {
         }
       }
     }
-  };
+    setDeleteButtonClicked(false);
+  }, [deleteButtonClicked]);
+  useEffect(() => {
+    handleDeleteButtonClicked();
+  }, [handleDeleteButtonClicked]);
 
-  // Method to calculate the operation, and add the history entry
-  const calculateAndLog = () => {
+  // Handling when the calculation (and log) is desired
+  const [doCalculationAndLog, setDoCalculationAndLog] = useState(false);
+  const calculateAndLog = useCallback(() => {
+    if (!doCalculationAndLog) return;
     let numbersCpy = [...numbers];
     let operatorsCpy = [...operators];
     const timestamp = new Date().toLocaleString();
     const operationStr = `${displayStr} =`;
-
     while (operatorsCpy.length > 0) {
       let operationIdx = -1;
       let operationObj = undefined;
-
       for (let operation of operations.sort((x, y) => x.priority - y.priority)) {
         operationIdx = operatorsCpy.indexOf(operation.symbol);
         if (operationIdx !== -1) {
@@ -78,7 +115,6 @@ export const Calculator = ({ history, setHistory }) => {
           break;
         }
       }
-
       const numbersInvolved = numbersCpy.splice(operationIdx, operationObj.neededValues);
       const operationResult = operationObj.method(...numbersInvolved.map(parseFloat)).toString();
       if (operationResult.includes("ERROR")) {
@@ -93,56 +129,69 @@ export const Calculator = ({ history, setHistory }) => {
     setHistory([{ timestamp, operationStr, result }, ...history]);
     setInitialState();
     if (!numbersCpy[0].includes("ERROR")) setNumbers(numbersCpy);
-  };
+    setIsResult(true);
+    setDoCalculationAndLog(false);
+  }, [doCalculationAndLog]);
+  useEffect(() => {
+    calculateAndLog();
+  }, [calculateAndLog]);
 
-  // Method to handle when a number is clicked, to update the numbers list
-  const handleNumberClicked = (number) => {
-    if (isResult) setNumbers([number]);
-    else if (wasOperatorClicked) setNumbers([...numbers, number]);
-    else {
-      const lastNumber = numbers[numbers.length - 1];
-      const newNumber = lastNumber === '0' ? number : lastNumber + number;
-      setNumbers([...numbers.slice(0, -1), newNumber]);
-    }
-    setWasOperatorClicked(false);
-    setIsResult(false);
-  };
-
-  // Method to handle when an operator is clicked, to update the operators list
-  const handleOperatorClicked = (operator) => {
-    if (wasOperatorClicked) setOperators([...operators.slice(0, -1), operator]);
-    else setOperators([...operators, operator]);
-    setWasOperatorClicked(true);
-    setIsResult(false);
-  };
-
-  // Method to handle when a button is clicked, to update the operation and calculator's lists
-  const handleButtonClicked = (event) => {
+  // Method to handle when a button is clicked
+  const handleButtonClicked = useCallback((event) => {
     const buttonClass = event.target.className;
-    if (buttonClass.includes("number")) handleNumberClicked(event.target.textContent);
-    else if (buttonClass.includes("operator")) handleOperatorClicked(event.target.textContent);
+    if (buttonClass.includes("number")) setNumberClicked(event);
+    else if (buttonClass.includes("operator")) setOperatorClicked(event);
+    else if (buttonClass.includes("specialOperator")) setSpecialOperatorClicked(event);
+    else if (buttonClass.includes("delete")) setDeleteButtonClicked(true);
     else {
       const buttonId = event.target.id;
       if (buttonId === "clear") setInitialState();
-      else if (buttonId === "delete") handleDeleteButton();
-      else if (buttonId === "calculate") calculateAndLog();
+      else if (buttonId === "calculate") setDoCalculationAndLog(true);
     }
-  };
+  }, []);
 
-  // Handle disabling of some buttons
+  // Handling of the operation display update
+  const [displayStr, setDisplayStr] = useState('0');
+  const updateDisplayStr = useCallback(() => {
+    let newDisplayStr = '';
+    const sqrtIdx = operators.indexOf(sqRtSymbol);
+    const sqrIdx = operators.indexOf(sqrSymbol);
+    if (sqrtIdx !== -1) {
+      newDisplayStr += `${sqRtSymbol}(`;
+    } else if (sqrIdx !== -1) {
+      newDisplayStr += '(';
+    }
+    numbers.forEach((number, index) => {
+      newDisplayStr += number;
+      if ((index !== sqrtIdx && index !== sqrIdx) && operators[index]) newDisplayStr += operators[index];
+    });
+    if (sqrtIdx !== -1) {
+      newDisplayStr += ')';
+    } else if (sqrIdx !== -1) {
+      newDisplayStr += `)${sqrSymbol}`;
+    }
+    setDisplayStr(newDisplayStr);
+    setDoCalculationAndLog(sqrtIdx !== -1 || sqrIdx !== -1);
+  }, [isResult, numbers, operators]);
+  useEffect(() => {
+    updateDisplayStr();
+  }, [updateDisplayStr]);
+
+  // Handling some buttons disablement
+  const [areSpecialOperatorsDisabled, setAreSpecialOperatorsDisabled] = useState(false);
   const [isCalculateDisabled, setIsCalculateDisabled] = useState(false);
   const [isDeleteDisabled, setIsDeleteDisabled] = useState(true);
   useEffect(() => {
+    setAreSpecialOperatorsDisabled(wasOperatorClicked);
     setIsCalculateDisabled(wasOperatorClicked);
     setIsDeleteDisabled(isResult || (numbers.length <= 1 && numbers[0] === "0" && operators.length === 0));
   }, [isResult, numbers, operators, wasOperatorClicked]);
-
-  // TODO: Afegir implementació per keydown dels buttons del teclat
 
   return (
     <section id="calculator">
       <Display displayStr={displayStr} />
       <Buttons
+        areSpecialOperatorsDisabled={areSpecialOperatorsDisabled}
         handleButtonClicked={handleButtonClicked}
         isCalculateDisabled={isCalculateDisabled}
         isDeleteDisabled={isDeleteDisabled}

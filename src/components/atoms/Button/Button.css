@@ -20,11 +20,11 @@ button.operator:hover {
   background-color: #f67b0f;
 }
 
-button.specialOperation {
+button.specialOperator {
   background-color: #c278f7;
 }
 
-button.specialOperation:hover {
+button.specialOperator:hover {
   background-color: #9850fc;
 }
 

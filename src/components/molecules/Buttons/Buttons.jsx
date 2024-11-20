@@ -3,19 +3,22 @@ import { Button } from "../../atoms/Button"
 import BackspaceSymbol from "../../../assets/backspace_symbol.png"
 
 export const Buttons = ({
+  areSpecialOperatorsDisabled,
   handleButtonClicked,
   isCalculateDisabled,
   isDeleteDisabled
 }) => (
   <div id="buttons">
     <Button
-      className="specialOperation"
+      className="specialOperator"
       content="&#8730;"
+      disabled={areSpecialOperatorsDisabled}
       handleButtonClicked={handleButtonClicked}
     />
     <Button
-      className="specialOperation"
+      className="specialOperator"
       content="&sup2;"
+      disabled={areSpecialOperatorsDisabled}
       handleButtonClicked={handleButtonClicked}
     />
     <Button
