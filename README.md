@@ -3,6 +3,8 @@ This project contains the fourth assignment for the "*Full-Stack Developer*" mas
 It has been developed with zero previous knowledge in the related technologies and languages (React and JS), apart from the classes and the introduction courses.
 
 ## Table of Contents
+1. [How it was created](#how-it-was-created)
+2. [How to run the project](#how-to-run-the-project)
 
 ---
 
